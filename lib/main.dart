@@ -26,7 +26,13 @@ final router = GoRouter(initialLocation: '/viewer', routes: [
   GoRoute(
       path: '/form',
       name: 'form',
-      builder: (context, _) => const EventFormPage()),
+      builder: (context, _) => const EventFormPage(),
+      routes: [
+        GoRoute(
+            path: ':eventId',
+            builder: (context, routerState) => EventFormPage(
+                eventId: _pathParamToInt(routerState, 'eventId')))
+      ]),
   GoRoute(
       path: '/event',
       builder: (context, _) => const EventDetailsPage(),
@@ -58,44 +64,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// class HomePage extends StatefulWidget {
-//   const HomePage({
-//     super.key,
-//   });
-//
-//   @override
-//   State<HomePage> createState() => _HomePageState();
-// }
-//
-// class _HomePageState extends State<HomePage> {
-//   bool _isFilteringPastEvents = false;
-//   bool allowNavigation = true;
-//
-//   _onToggleFilterPastEvents() {
-//     final eventViewModel = context.read<EventViewModel>();
-//     _isFilteringPastEvents = !_isFilteringPastEvents;
-//     setState(() {
-//       eventViewModel.filterPastEvents = _isFilteringPastEvents;
-//       eventViewModel.toggleFilter();
-//     });
-//     print('filter: ${eventViewModel.filterPastEvents}');
-//
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           actions: [
-//             InkWell(
-//                 onTap: _onToggleFilterPastEvents,
-//                 child: _isFilteringPastEvents
-//                     ? const Icon(Icons.filter_alt)
-//                     : const Icon(Icons.filter_alt_off))
-//           ],
-//         ),
-//         body: const EventViewer(),
-//         floatingActionButton: const EventFormButton());
-//   }
-// }

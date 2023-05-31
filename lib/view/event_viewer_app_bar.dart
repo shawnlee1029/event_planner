@@ -27,6 +27,7 @@ class _EventViewerAppBarState extends State<EventViewerAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      title: const Text('Event Planner'),
       actions: [
         InkWell(
             onTap: _onToggleFilterPastEvents,

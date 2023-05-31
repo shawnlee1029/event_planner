@@ -27,13 +27,13 @@ class _EventDetailsBody extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('${event.startDate}',
+                Text(event.strStartDateTime,
                     style: Theme
                         .of(context)
                         .textTheme
                         .bodyMedium),
                 const VerticalDivider(),
-                Text('${event.endDate}')
+                Text(event.strEndDateTime)
               ],
             ),
           ],
@@ -47,12 +47,16 @@ class EventDetailsViewer extends StatelessWidget {
   const EventDetailsViewer(this.id, {super.key});
 
   onNextPressed(int index, List list, BuildContext context) {
-    int nextIndex = index < list.length - 1 ? ++index : 0;
-    context.push('/event/${list[nextIndex].id}');
+    if(list.length > 1) {
+      int nextIndex = index < list.length - 1 ? ++index : 0;
+      context.push('/event/${list[nextIndex].id}');
+    }
   }
   onPreviousPressed(int index, List list, BuildContext context) {
-    int prevIndex = index > 0 ? --index : list.length - 1;
-    context.push('/event/${list[prevIndex].id}');
+    if(list.length > 1) {
+      int prevIndex = index > 0 ? --index : list.length - 1;
+      context.push('/event/${list[prevIndex].id}');
+    }
   }
 
   @override
@@ -67,7 +71,7 @@ class EventDetailsViewer extends StatelessWidget {
             final index = events.indexWhere((event) => event.id == id);
             return Column(children: [
               _EventDetailsBody(events[index]),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 OutlinedButton(
                     onPressed: () => onPreviousPressed(index, events, context),
                     child: const Icon(Icons.chevron_left)),

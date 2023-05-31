@@ -48,7 +48,19 @@ class EventViewModel extends ChangeNotifier {
           .addEvent(db_event.Event(title, description, start, end));
       notifyListeners();
     }
-    else throw Future.error(title);
+    else {
+      throw Future.error(title);
+    }
+  }
+  Future<void> editEvent(int id, String title, String description, DateTime start, DateTime end) async {
+    final currentEvent = await getEvent(id);
+    if(currentEvent!.title == title|| await isTitleUnique(title)){
+      await _database.eventDao.updateEvent(db_event.Event(id:id, title,description,start,end));
+      notifyListeners();
+    }
+    else {
+      throw Future.error(title);
+    }
   }
 
   Future<void> removeEvent(Event event) async {

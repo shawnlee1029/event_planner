@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:event_planner/view_model/event_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../view_model/event.dart';
 import 'date_time_selector.dart';
 
+//TODO Load existing event information if passed an event id
 class EventForm extends StatefulWidget {
-  const EventForm({super.key});
+  final Event? event;
+
+  const EventForm({super.key, this.event});
 
   @override
   State<EventForm> createState() => _EventFormState();
@@ -17,6 +21,15 @@ class _EventFormState extends State<EventForm> {
   final _descriptionController = TextEditingController(text: null);
   DateTimeRange _dateTimeRange = DateTimeRange(
       start: DateTime.now(), end: DateTime.now().add(const Duration(days: 1)));
+
+  @override
+  void initState() {
+    if(widget.event != null){
+      _titleController.text = widget.event!.title;
+      _descriptionController.text = widget.event!.description;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -46,11 +59,21 @@ class _EventFormState extends State<EventForm> {
     }
     if (formState.validate()) {
       final navigator = Navigator.of(context);
-      await context.read<EventViewModel>().addEvent(
-          _titleController.text,
-          _descriptionController.text,
-          _dateTimeRange.start,
-          _dateTimeRange.end);
+      EventViewModel eventViewModel = context.read<EventViewModel>();
+      if (widget.event == null) {
+        await eventViewModel.addEvent(
+            _titleController.text,
+            _descriptionController.text,
+            _dateTimeRange.start,
+            _dateTimeRange.end);
+      } else {
+        await eventViewModel.editEvent(
+            widget.event!.id,
+            _titleController.text,
+            _descriptionController.text,
+            _dateTimeRange.start,
+            _dateTimeRange.end);
+      }
       _formKey.currentState!.reset();
       _dateTimeRange =
           DateTimeRange(start: DateTime.now(), end: DateTime.now());
@@ -95,7 +118,7 @@ class _EventFormState extends State<EventForm> {
                       end: _dateTimeRange.end,
                       dateRangeCallBack: _onEditDateRange),
                   ElevatedButton(
-                      onPressed: _submit, child: const Text("Add Event")),
+                      onPressed: _submit, child: const Text("Submit")),
                 ]))
       ],
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 class Event {
   final int id;
   final String title;
@@ -9,6 +9,12 @@ class Event {
   late final DateTimeRange dateRange = DateTimeRange(start:_startDate,end:_endDate);
   Event(this.title, this.description,this._startDate, this._endDate, this.id);
 
+  String get strStartDateTime => DateFormat.yMd().add_jm().format(_startDate);
+  String get strEndDateTime=> DateFormat.yMd().add_jm().format(_endDate);
+  String get strStartDate => DateFormat().add_yMd().format(_startDate);
+  String get strEndDate => DateFormat().add_yMd().format(_endDate);
+  String get strStartTime => DateFormat().add_jm().format(_startDate);
+  String get strEndTime => DateFormat().add_jm().format(_endDate);
 
   @override
   bool operator ==(Object other)  => other is Event && other.id == id;
