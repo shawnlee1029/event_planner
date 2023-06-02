@@ -2,7 +2,7 @@ import 'package:event_planner/model/event.dart';
 import 'package:floor/floor.dart';
 
 @dao
-abstract class EventDao {
+abstract class FloorEventDao {
   @Query('SELECT * FROM Event ORDER BY startDate')
   Future<List<Event>> listEvents();
 

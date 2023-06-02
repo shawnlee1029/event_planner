@@ -61,7 +61,7 @@ class _$EventDatabase extends EventDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
-  EventDao? _eventDaoInstance;
+  FloorEventDao? _eventDaoInstance;
 
   Future<sqflite.Database> open(
     String path,
@@ -94,12 +94,12 @@ class _$EventDatabase extends EventDatabase {
   }
 
   @override
-  EventDao get eventDao {
+  FloorEventDao get eventDao {
     return _eventDaoInstance ??= _$EventDao(database, changeListener);
   }
 }
 
-class _$EventDao extends EventDao {
+class _$EventDao extends FloorEventDao {
   _$EventDao(
     this.database,
     this.changeListener,

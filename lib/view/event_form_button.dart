@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class EventFormButton extends StatelessWidget {
-  const EventFormButton({Key? key}) : super(key: key);
+  final bool usingFirestore;
+  const EventFormButton({Key? key, required this.usingFirestore}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return FloatingActionButton(
         onPressed: () {
           context.push('/form');

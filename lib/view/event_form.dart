@@ -24,7 +24,7 @@ class _EventFormState extends State<EventForm> {
 
   @override
   void initState() {
-    if(widget.event != null){
+    if (widget.event != null) {
       _titleController.text = widget.event!.title;
       _descriptionController.text = widget.event!.description;
     }
@@ -53,19 +53,24 @@ class _EventFormState extends State<EventForm> {
   }
 
   _submit() async {
+    EventViewModel eventViewModel = context.read<EventViewModel>();
     final formState = _formKey.currentState;
+
     if (formState == null) {
       return;
     }
     if (formState.validate()) {
       final navigator = Navigator.of(context);
-      EventViewModel eventViewModel = context.read<EventViewModel>();
       if (widget.event == null) {
-        await eventViewModel.addEvent(
-            _titleController.text,
-            _descriptionController.text,
-            _dateTimeRange.start,
-            _dateTimeRange.end);
+        if (eventViewModel.usingFireStore) {
+          // await eventViewModel.addFirestoreEvent();
+        } else {
+          await eventViewModel.addEvent(
+              _titleController.text,
+              _descriptionController.text,
+              _dateTimeRange.start,
+              _dateTimeRange.end);
+        }
       } else {
         await eventViewModel.editEvent(
             widget.event!.id,
@@ -117,8 +122,16 @@ class _EventFormState extends State<EventForm> {
                       start: _dateTimeRange.start,
                       end: _dateTimeRange.end,
                       dateRangeCallBack: _onEditDateRange),
-                  ElevatedButton(
-                      onPressed: _submit, child: const Text("Submit")),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                            onPressed: _submit,
+                            child: const Text("Save Locally")),
+                        ElevatedButton(
+                            onPressed: _submit,
+                            child: const Text("Save Online")),
+                      ]),
                 ]))
       ],
     );

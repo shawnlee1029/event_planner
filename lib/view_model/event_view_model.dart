@@ -1,16 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_planner/model/event_database.dart';
 import 'package:flutter/material.dart';
 import 'package:event_planner/model/event.dart' as db_event;
 import 'event.dart';
-import 'package:intl/intl.dart';
-
+import 'package:event_planner/model/firestore_event_dao.dart';
 class EventViewModel extends ChangeNotifier {
   final EventDatabase _database;
+  final FireStoreEventDao _fireStoreEventDao = FireStoreEventDao();
   bool filterPastEvents = false;
-
+  bool usingFireStore = false;
   EventViewModel(this._database);
 
-  Event _dbEventToViewEvent(db_event.Event dbEvent) => Event(
+  Future<List<Event>?> getFireStoreEvent(int id) async{
+    return await _fireStoreEventDao.getEvent(id);
+  }
+  Future<List<List<Event>>> getFireStoreEvents() async {
+    return await _fireStoreEventDao.getEvents();
+  }
+  Future<String> addFirestoreEvent(List<Event> event) async{
+    return await _fireStoreEventDao.addEvent(event);
+  }
+    Event _dbEventToViewEvent(db_event.Event dbEvent) => Event(
         dbEvent.title,
         dbEvent.description,
         dbEvent.startDate,
@@ -39,6 +49,9 @@ class EventViewModel extends ChangeNotifier {
       return null;
     }
     return _dbEventToViewEvent(dbEvent);
+  }
+  Future<List<Event>> listFireStoreEvents() async{
+    return _fireStoreEventDao.listEvents();
   }
 
   Future<void> addEvent(
@@ -87,6 +100,10 @@ class EventViewModel extends ChangeNotifier {
 
   void toggleFilter() {
     filterPastEvents = !filterPastEvents;
+    notifyListeners();
+  }
+  void toggleUsingFireStore(){
+    usingFireStore = !usingFireStore;
     notifyListeners();
   }
 

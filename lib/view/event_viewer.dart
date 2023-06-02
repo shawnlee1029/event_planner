@@ -4,25 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:event_planner/view_model/event_view_model.dart';
 
 class EventViewer extends StatelessWidget {
-  const EventViewer({super.key});
-
-  // _onEdit(int index, DateTimeRange dateTimeRange, BuildContext context,
-  //     EventViewModel eventViewModel) async {
-  //   final DateTimeRange? dateRangePicked = await showDateRangePicker(
-  //       context: context,
-  //       initialDateRange: dateTimeRange,
-  //       firstDate: DateTime(2023),
-  //       lastDate: DateTime(2123));
-  //   if (dateRangePicked != null) {
-  //     eventViewModel.editEventDateRange(dateRangePicked, index);
-  //   }
-  // }
-
+  final bool usingFireStore;
+  const EventViewer({super.key, this.usingFireStore = true});
 
   @override
   Widget build(BuildContext context) {
     final eventViewModel = context.watch<EventViewModel>();
-    final eventListFuture = eventViewModel.events;
+    final eventListFuture = usingFireStore ? eventViewModel.listFireStoreEvents() : eventViewModel.events;
     return FutureBuilder(
         future: eventListFuture,
         builder: (context, snapshot) {
