@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "23383201542",
+    "project_id": "eventplanner-a063f",
+    "storage_bucket": "eventplanner-a063f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23383201542:android:6deaad498e776c423e7087",
+        "android_client_info": {
+          "package_name": "com.shooonsoft.event_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23383201542-504muufasvedubnta3qb8k8m63gb6q3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBAZfv2KUE3eSB1gxQ-ENJTUsjBC_Yifs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23383201542-504muufasvedubnta3qb8k8m63gb6q3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
